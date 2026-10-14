@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="pt" translate="no">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#08111f">
+  <meta name="google" content="notranslate">
+  <title>Terminal ACM-COIN</title>
+  <link rel="icon" href="../shared/assets/acm-coin.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../shared/src/styles.css">
+  <link rel="stylesheet" href="./src/terminal.css">
+</head>
+<body>
+  <main class="app">
+    <header class="bar no-print">
+      <img class="logo" src="../shared/assets/acm-mark-white.svg" alt="ACM Student Chapter FEUP">
+      <span class="who">terminal<br><b id="shop-name">…</b></span>
+    </header>
+
+    <!-- teclado -->
+    <section data-screen="keypad" hidden>
+      <h1 class="sr-only">Cobrar</h1>
+      <div class="display" aria-live="polite">
+        <span class="label">valor a cobrar</span>
+        <output class="display-amount" id="amount" for="keys">0</output>
+        <span class="display-symbol" id="symbol">ACM-COIN</span>
+      </div>
+      <div class="keys" id="keys" role="group" aria-label="Teclado numérico">
+        <button type="button" data-key="1">1</button>
+        <button type="button" data-key="2">2</button>
+        <button type="button" data-key="3">3</button>
+        <button type="button" data-key="4">4</button>
+        <button type="button" data-key="5">5</button>
+        <button type="button" data-key="6">6</button>
+        <button type="button" data-key="7">7</button>
+        <button type="button" data-key="8">8</button>
+        <button type="button" data-key="9">9</button>
+        <button type="button" data-key="," aria-label="vírgula">,</button>
+        <button type="button" data-key="0">0</button>
+        <button type="button" data-key="back" aria-label="apagar">⌫</button>
+      </div>
+      <button class="btn primary charge-btn" id="charge" type="button" disabled>cobrar</button>
+      <div class="actions">
+        <button class="btn ghost" id="open-history" type="button">vendas do dia</button>
+        <button class="btn ghost" id="open-settings" type="button">definições</button>
+      </div>
+    </section>
+
+    <!-- QR -->
+    <section data-screen="charge" hidden>
+      <h2>pagar com<em>acm-coin</em></h2>
+      <div class="balance">
+        <span class="amount"><span id="charge-amount"></span><small id="charge-symbol"></small></span>
+      </div>
+      <div class="qr" id="charge-qr" role="img" aria-label="Código QR do pagamento"></div>
+      <p class="muted center">abre a carteira, toca em <b>[1] pagar</b> e lê o código.</p>
+      <div class="status" role="status"><span class="spinner" aria-hidden="true"></span><span id="charge-status">à espera do pagamento…</span></div>
+      <button class="btn ghost push" id="charge-cancel" type="button">cancelar</button>
+    </section>
+
+    <!-- pago + recibo -->
+    <section data-screen="paid" hidden>
+      <h2 class="ok-mark no-print">pago<span class="caret"></span></h2>
+      <div class="paper" id="receipt">
+        <img class="paper-logo" src="../shared/assets/acm-mark.svg" alt="">
+        <strong class="paper-shop" id="receipt-shop"></strong>
+        <span id="receipt-date"></span>
+        <hr>
+        <div class="paper-row"><span>total</span><strong id="receipt-total"></strong></div>
+        <div class="paper-row"><span>de</span><span id="receipt-from"></span></div>
+        <div class="paper-row"><span>venda</span><span id="receipt-sale"></span></div>
+        <hr>
+        <div class="paper-qr" id="receipt-qr"></div>
+        <span class="paper-small">recibo na cadeia · polkadot</span>
+        <span class="paper-small">obrigado!</span>
+      </div>
+      <div class="actions push no-print">
+        <button class="btn" id="print" type="button">imprimir</button>
+        <button class="btn primary" id="new-sale" type="button">nova venda</button>
+      </div>
+    </section>
+
+    <!-- vendas -->
+    <section data-screen="history" hidden>
+      <h2>vendas<em>do dia</em></h2>
+      <div class="chips">
+        <span class="chip"><span class="k">total</span><span id="history-total">0</span></span>
+        <span class="chip"><span class="k">vendas</span><span id="history-count">0</span></span>
+      </div>
+      <ol class="log" id="history-list"></ol>
+      <p class="muted" id="history-empty">Ainda não há vendas hoje.</p>
+      <div class="box">
+        <span class="label">saldo do terminal</span>
+        <a class="value" id="history-balance" target="_blank" rel="noopener">…</a>
+      </div>
+      <button class="btn primary push" id="history-back" type="button">voltar</button>
+    </section>
+
+    <!-- definições -->
+    <section data-screen="settings" hidden>
+      <h2>definições<em>do terminal</em></h2>
+      <label class="field"><span class="label">nome da loja</span>
+        <input id="settings-name" placeholder="ACM FEUP" autocomplete="off">
+      </label>
+      <div class="box">
+        <span class="label">endereço que recebe</span>
+        <div class="qr small" id="settings-qr" role="img" aria-label="Código QR do endereço do terminal"></div>
+        <div class="row">
+          <a class="value" id="settings-address" target="_blank" rel="noopener"></a>
+          <button class="link-btn" id="settings-copy" type="button">copiar</button>
+        </div>
+        <span class="label">moeda</span>
+        <a class="value" id="settings-coin" target="_blank" rel="noopener"></a>
+      </div>
+      <details>
+        <summary>levantar o saldo para outra carteira</summary>
+        <div class="stack" style="margin-top:10px">
+          <label class="field"><span class="label">destino</span>
+            <input id="withdraw-to" placeholder="0x…" autocomplete="off" autocapitalize="off" spellcheck="false">
+          </label>
+          <button class="btn" id="withdraw" type="button" disabled>enviar tudo</button>
+          <p class="muted">Precisa de um pouco de PAS no terminal para pagar a rede. A taxa de 1% sai do valor enviado.</p>
+        </div>
+      </details>
+      <button class="btn primary push" id="settings-back" type="button">voltar</button>
+    </section>
+  </main>
+
+  <div class="paid-overlay no-print" id="paid-overlay" role="status" hidden>
+    <img src="../shared/assets/acm-coin.svg" alt="" class="paid-coin">
+    <span class="ok-mark">pago</span>
+    <span class="paid-amount" id="overlay-amount"></span>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

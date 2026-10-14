@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="pt" translate="no">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#08111f">
+  <meta name="google" content="notranslate">
+  <title>Carteira ACM-COIN</title>
+  <link rel="icon" href="../shared/assets/acm-coin.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../shared/src/styles.css">
+</head>
+<body>
+  <main class="app">
+    <header class="bar">
+      <img class="logo" src="../shared/assets/acm-mark-white.svg" alt="ACM Student Chapter FEUP">
+      <span class="who">carteira<br><b id="me-short">…</b></span>
+    </header>
+
+    <!-- início -->
+    <section data-screen="home" hidden>
+      <div class="coins-deco" aria-hidden="true">
+        <img src="../shared/assets/acm-coin.svg" alt="">
+        <img src="../shared/assets/acm-coin.svg" alt="">
+      </div>
+      <h1>a minha<em>carteira</em></h1>
+      <p class="sub">acm-coin · web 3.0</p>
+      <div class="balance" aria-live="polite">
+        <span class="amount"><span id="coin-balance">…</span><small id="coin-symbol">ACM-COIN</small></span>
+        <span class="chip"><span class="k">pas</span><span id="pas-balance">…</span></span>
+      </div>
+      <p class="error" id="home-error"></p>
+      <ul class="menu">
+        <li><button id="go-pay" type="button"><span class="n">[1]</span>pagar<span class="hint">ler código</span></button></li>
+        <li><button id="go-receive" type="button"><span class="n">[2]</span>receber<span class="hint">mostrar QR</span></button></li>
+        <li><button id="go-send" type="button"><span class="n">[3]</span>enviar<span class="hint">para endereço</span></button></li>
+        <li><button id="go-backup" type="button"><span class="n">[4]</span>12 palavras<span class="hint">cópia · importar</span></button></li>
+      </ul>
+      <p class="foot push">rede de teste polkadot<b>sem valor real</b></p>
+    </section>
+
+    <!-- câmara -->
+    <section data-screen="scan" hidden>
+      <h2>aponta para o<em>código</em></h2>
+      <div class="scanner"><video id="scan-video" aria-label="Imagem da câmara"></video></div>
+      <p class="error" id="scan-error" role="alert"></p>
+      <label class="btn photo-btn">
+        tirar foto do código
+        <input id="scan-photo" type="file" accept="image/*" capture="environment" class="sr-only">
+      </label>
+      <button class="btn ghost push" id="scan-cancel" type="button">cancelar</button>
+    </section>
+
+    <!-- confirmar pagamento -->
+    <section data-screen="confirm" hidden>
+      <h2>confirmar<em>pagamento</em></h2>
+      <div class="balance">
+        <span class="amount"><span id="confirm-amount"></span><small id="confirm-symbol"></small></span>
+      </div>
+      <div class="box">
+        <div class="row"><span class="label">para</span><span class="value" id="confirm-to"></span></div>
+        <div class="row"><span class="label">taxa (1%)</span><span class="value" id="confirm-fee"></span></div>
+        <div class="row"><span class="label">total a sair</span><span class="value" id="confirm-total"></span></div>
+        <div class="row"><span class="label">o teu saldo</span><span class="value" id="confirm-balance"></span></div>
+      </div>
+      <p class="error" id="confirm-error" role="alert"></p>
+      <div class="actions push">
+        <button class="btn ghost" id="confirm-cancel" type="button">cancelar</button>
+        <button class="btn primary" id="confirm-go" type="button">pagar</button>
+      </div>
+    </section>
+
+    <!-- a enviar -->
+    <section data-screen="pending" hidden>
+      <h2>a enviar<span class="caret"></span></h2>
+      <div class="status" role="status"><span class="spinner" aria-hidden="true"></span><span id="pending-status">a assinar…</span></div>
+    </section>
+
+    <!-- feito -->
+    <section data-screen="done" hidden>
+      <h2 class="ok-mark">feito<span class="caret"></span></h2>
+      <div class="box">
+        <div class="row"><span class="label">valor</span><span class="value" id="done-amount"></span></div>
+        <div class="row"><span class="label">para</span><span class="value" id="done-to"></span></div>
+        <a id="done-link" target="_blank" rel="noopener">ver no explorador ↗</a>
+      </div>
+      <button class="btn primary push" id="done-home" type="button">voltar</button>
+    </section>
+
+    <!-- receber -->
+    <section data-screen="receive" hidden>
+      <h2>receber<em>acm-coin</em></h2>
+      <div class="qr" id="receive-qr" role="img" aria-label="Código QR com o teu endereço"></div>
+      <div class="box"><span class="label">o meu endereço</span><span class="value" id="receive-address"></span></div>
+      <div class="actions push">
+        <button class="btn" id="receive-copy" type="button">copiar</button>
+        <button class="btn primary" id="receive-back" type="button">voltar</button>
+      </div>
+    </section>
+
+    <!-- enviar -->
+    <section data-screen="send" hidden>
+      <h2>enviar<em>acm-coin</em></h2>
+      <label class="field"><span class="label">para</span>
+        <input id="send-to" placeholder="0x…" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="send-error">
+      </label>
+      <button class="btn" id="send-scan" type="button">ler endereço com a câmara</button>
+      <label class="field"><span class="label">quanto</span>
+        <input id="send-amount" inputmode="decimal" placeholder="10" autocomplete="off" aria-describedby="send-fee send-error">
+      </label>
+      <p class="muted" id="send-fee">a moeda cobra 1% a mais, pago por ti.</p>
+      <p class="error" id="send-error" role="alert"></p>
+      <div class="actions push">
+        <button class="btn ghost" id="send-back" type="button">voltar</button>
+        <button class="btn primary" id="send-go" type="button">enviar</button>
+      </div>
+    </section>
+
+    <!-- palavras -->
+    <section data-screen="backup" hidden>
+      <h2>as tuas<em>12 palavras</em></h2>
+      <p class="muted">Estas palavras são a tua carteira e só existem neste browser. Quem as tiver gasta o que lá está. Escreve-as num papel.</p>
+      <button class="btn" id="backup-reveal" type="button" aria-expanded="false" aria-controls="backup-words">mostrar palavras</button>
+      <ol class="words" id="backup-words" hidden></ol>
+      <details>
+        <summary>usar outra carteira</summary>
+        <div class="stack" style="margin-top:10px">
+          <label class="field"><span class="label">12 palavras separadas por espaços</span>
+            <textarea id="backup-import" rows="3" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="backup-error"></textarea>
+          </label>
+          <p class="error" id="backup-error" role="alert"></p>
+          <button class="btn" id="backup-import-go" type="button">importar</button>
+        </div>
+      </details>
+      <button class="btn primary push" id="backup-back" type="button">voltar</button>
+    </section>
+  </main>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

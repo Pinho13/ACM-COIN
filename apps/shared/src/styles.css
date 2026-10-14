@@ -1,0 +1,625 @@
+@import "@fontsource/ibm-plex-mono/latin-400.css";
+@import "@fontsource/ibm-plex-mono/latin-500.css";
+@import "@fontsource/ibm-plex-mono/latin-700.css";
+
+/* Identidade ACM FEUP: azul-noite em degradê, azul ACM, tipografia mono em minúsculas. */
+:root {
+  --navy-0: #08111f;
+  --navy-1: #0a1a38;
+  --navy-2: #0d2a5c;
+  --navy: #002f6c;
+  --blue: #0085ca;
+  --blue-fill: #0079b8;
+  --blue-text: #3fa9e0;
+  --blue-line: rgba(0, 133, 202, 0.55);
+  --white: #ffffff;
+  --muted: #9fb3d1;
+  --danger: #ff8a8a;
+  --ok: #5fe3a1;
+  --radius: 0;
+  --gutter: 20px;
+  --font: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--navy-0);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--white);
+  background: linear-gradient(180deg, var(--navy-0) 0%, var(--navy-1) 45%, var(--navy-2) 100%) fixed;
+  -webkit-font-smoothing: antialiased;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--blue-text);
+  outline-offset: 3px;
+}
+
+[tabindex="-1"]:focus {
+  outline: none;
+}
+
+.app {
+  width: 100%;
+  max-width: 480px;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: calc(env(safe-area-inset-top) + 16px) var(--gutter) calc(env(safe-area-inset-bottom) + 16px);
+  display: flex;
+  flex-direction: column;
+}
+
+section[data-screen] {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  animation: enter 0.22s ease-out;
+}
+
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ---------- topo ---------- */
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 14px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--blue-line);
+}
+
+.bar .logo {
+  height: 44px;
+  width: auto;
+  display: block;
+}
+
+.bar .who {
+  font-size: 13px;
+  color: var(--muted);
+  text-align: right;
+}
+
+.bar .who b {
+  color: var(--white);
+  font-weight: 500;
+}
+
+/* ---------- tipografia ---------- */
+h1,
+h2 {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  text-transform: lowercase;
+}
+
+h1 {
+  font-size: clamp(34px, 11vw, 46px);
+}
+
+h2 {
+  font-size: clamp(28px, 8.5vw, 36px);
+}
+
+h1 em,
+h2 em {
+  display: block;
+  font-style: normal;
+  color: var(--blue);
+}
+
+.sub {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  text-transform: lowercase;
+}
+
+.muted {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.error {
+  margin: 0;
+  min-height: 1.4em;
+  color: var(--danger);
+  font-size: 14px;
+}
+
+.label {
+  display: block;
+  font-size: 13px;
+  color: var(--blue-text);
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+}
+
+.value {
+  font-size: 15px;
+  word-break: break-all;
+}
+
+.mono-num {
+  font-variant-numeric: tabular-nums;
+}
+
+a {
+  color: var(--blue-text);
+}
+
+/* ---------- blocos ---------- */
+.box {
+  border: 1px solid var(--blue-line);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  border: 1px solid var(--blue-line);
+  padding: 8px 12px;
+  font-size: 15px;
+}
+
+.chip .k {
+  color: var(--blue-text);
+  margin-right: 8px;
+}
+
+/* saldo grande, como o bloco da data no cartaz */
+.balance {
+  display: flex;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.balance .amount {
+  flex: 1 1 auto;
+  background: var(--blue-fill);
+  padding: 10px 16px;
+  font-size: clamp(30px, 10vw, 42px);
+  font-weight: 500;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.balance .amount small {
+  font-size: 0.42em;
+  font-weight: 500;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.balance .chip {
+  display: flex;
+  align-items: center;
+}
+
+/* ---------- lista [1] [2] [3] ---------- */
+.menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu button {
+  width: 100%;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 4px;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid rgba(0, 133, 202, 0.22);
+  text-align: left;
+  font-size: 19px;
+  font-weight: 500;
+  text-transform: lowercase;
+  cursor: pointer;
+  transition: background 0.15s, padding 0.15s;
+}
+
+.menu button:hover,
+.menu button:active {
+  background: rgba(0, 133, 202, 0.12);
+  padding-left: 10px;
+}
+
+.menu .n {
+  color: var(--blue);
+  font-weight: 400;
+  min-width: 2.4em;
+}
+
+.menu .hint {
+  margin-left: auto;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+/* ---------- botões ---------- */
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.actions > * {
+  flex: 1;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.push {
+  margin-top: auto;
+}
+
+.btn {
+  min-height: 54px;
+  padding: 12px 18px;
+  border: 1px solid var(--blue);
+  background: transparent;
+  font-size: 17px;
+  font-weight: 500;
+  text-transform: lowercase;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.08s;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn.primary {
+  background: var(--blue-fill);
+  border-color: var(--blue-fill);
+  font-weight: 700;
+}
+
+.btn.primary:hover {
+  background: var(--blue);
+}
+
+.btn.ghost {
+  border-color: var(--blue-line);
+  color: var(--muted);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.link-btn {
+  min-height: 32px;
+  padding: 4px 10px;
+  background: none;
+  border: 1px solid var(--blue-line);
+  font-size: 13px;
+  text-transform: lowercase;
+  cursor: pointer;
+}
+
+/* ---------- formulários ---------- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  min-height: 52px;
+  padding: 12px 14px;
+  background: rgba(0, 20, 50, 0.55);
+  border: 1px solid var(--blue-line);
+  border-radius: var(--radius);
+  font-size: 16px;
+  color: var(--white);
+}
+
+textarea {
+  font: inherit;
+  resize: vertical;
+  min-height: 96px;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #6c84a8;
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--blue-text);
+}
+
+/* ---------- QR ---------- */
+.qr {
+  align-self: center;
+  width: min(100%, 300px);
+  aspect-ratio: 1;
+  padding: 14px;
+  background: var(--white);
+  border: 1px solid var(--blue);
+  box-shadow: 0 0 0 6px rgba(0, 133, 202, 0.18);
+}
+
+.qr canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  image-rendering: pixelated;
+}
+
+/* ---------- mnemónica ---------- */
+.words {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  counter-reset: w;
+}
+
+.words li {
+  counter-increment: w;
+  border: 1px solid var(--blue-line);
+  padding: 8px 6px;
+  font-size: 15px;
+  display: flex;
+  gap: 6px;
+  min-width: 0;
+}
+
+.words li::before {
+  content: counter(w);
+  color: var(--blue-text);
+  font-size: 12px;
+  min-width: 1.4em;
+}
+
+/* ---------- câmara ---------- */
+.scanner {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  background: #000;
+  border: 1px solid var(--blue);
+  overflow: hidden;
+}
+
+.scanner video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.scanner::after {
+  content: "";
+  position: absolute;
+  inset: 16%;
+  border: 2px solid var(--blue-text);
+  box-shadow: 0 0 0 999px rgba(8, 17, 31, 0.45);
+}
+
+/* ---------- estados ---------- */
+.status {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 17px;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--blue-line);
+  border-top-color: var(--blue-text);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.caret::after {
+  content: "_";
+  color: var(--blue);
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.ok-mark {
+  font-size: 56px;
+  font-weight: 700;
+  color: var(--ok);
+  text-transform: lowercase;
+  line-height: 1;
+}
+
+/* ---------- moedas decorativas ---------- */
+.coins-deco {
+  position: relative;
+  height: 0;
+  pointer-events: none;
+}
+
+.coins-deco img {
+  position: absolute;
+  opacity: 0.9;
+  animation: float 6s ease-in-out infinite;
+}
+
+.coins-deco img:nth-child(1) {
+  right: -6px;
+  top: -6px;
+  width: 92px;
+  transform: rotate(-12deg);
+}
+
+.coins-deco img:nth-child(2) {
+  right: 74px;
+  top: 70px;
+  width: 52px;
+  animation-delay: -2s;
+  opacity: 0.65;
+}
+
+@keyframes float {
+  50% {
+    translate: 0 -8px;
+  }
+}
+
+/* ---------- rodapé ---------- */
+.foot {
+  margin-top: 26px;
+  padding-top: 14px;
+  border-top: 1px solid var(--blue-line);
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.foot b {
+  color: var(--white);
+  font-size: 14px;
+  text-transform: none;
+  letter-spacing: 0;
+  margin-left: 6px;
+}
+
+/* ---------- avisos ---------- */
+#toasts {
+  position: fixed;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom) + 20px);
+  translate: -50% 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 50;
+  width: min(440px, calc(100% - 32px));
+}
+
+.toast {
+  background: var(--navy);
+  border: 1px solid var(--blue);
+  padding: 12px 16px;
+  font-size: 14px;
+  animation: enter 0.2s ease-out;
+}
+
+details summary {
+  cursor: pointer;
+  color: var(--blue-text);
+  font-size: 14px;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.photo-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.photo-btn:focus-within {
+  outline: 2px solid var(--blue-text);
+  outline-offset: 3px;
+}

@@ -1,0 +1,224 @@
+/* Terminal SUNMI V3: ecrã alto em retrato, dedos grandes. */
+.app {
+  max-width: 560px;
+}
+
+.center {
+  text-align: center;
+}
+
+.display {
+  border: 1px solid var(--blue-line);
+  padding: 14px 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.display-amount {
+  font-size: clamp(44px, 15vw, 68px);
+  font-weight: 500;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.display-symbol {
+  text-align: right;
+  color: var(--blue-text);
+  font-size: 15px;
+}
+
+.keys {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.keys button {
+  min-height: clamp(58px, 9.5dvh, 84px);
+  background: rgba(0, 47, 108, 0.35);
+  border: 1px solid var(--blue-line);
+  font-size: 30px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.1s, transform 0.06s;
+  touch-action: manipulation;
+}
+
+.keys button:active {
+  background: rgba(0, 133, 202, 0.4);
+  transform: scale(0.97);
+}
+
+.keys button[data-key="back"] {
+  color: var(--blue-text);
+}
+
+.charge-btn {
+  min-height: 68px;
+  font-size: 24px;
+}
+
+.qr.small {
+  width: 160px;
+  padding: 8px;
+  box-shadow: none;
+}
+
+/* ---------- vendas ---------- */
+.log {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--blue-line);
+}
+
+.log li {
+  border-bottom: 1px solid rgba(0, 133, 202, 0.22);
+}
+
+.log a {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: baseline;
+  padding: 12px 2px;
+  min-height: 48px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.log .when {
+  color: var(--blue-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.log .who {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.log .total {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- recibo ---------- */
+.paper {
+  align-self: center;
+  width: min(100%, 340px);
+  background: #fff;
+  color: #0a1a38;
+  padding: 20px 18px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  font-size: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.paper-logo {
+  width: 74px;
+  height: auto;
+}
+
+.paper-shop {
+  font-size: 20px;
+  text-transform: lowercase;
+}
+
+.paper hr {
+  width: 100%;
+  border: 0;
+  border-top: 1px dashed #7d8fae;
+  margin: 8px 0;
+}
+
+.paper-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.paper-row strong {
+  font-size: 18px;
+}
+
+.paper-qr {
+  width: 140px;
+  aspect-ratio: 1;
+}
+
+.paper-qr canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.paper-small {
+  font-size: 12px;
+  color: #4a5d80;
+}
+
+/* ---------- pago ---------- */
+.paid-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: radial-gradient(circle at 50% 40%, #0d2a5c 0%, #08111f 75%);
+  animation: enter 0.2s ease-out;
+}
+
+.paid-coin {
+  width: 140px;
+  animation: pop 0.5s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.4) rotate(-40deg);
+    opacity: 0;
+  }
+}
+
+.paid-amount {
+  font-size: 28px;
+  font-weight: 500;
+}
+
+/* ---------- impressão (58 mm) ---------- */
+@media print {
+  @page {
+    size: 58mm auto;
+    margin: 0;
+  }
+  html,
+  body {
+    background: #fff !important;
+  }
+  .no-print,
+  .bar,
+  section:not([data-screen="paid"]) {
+    display: none !important;
+  }
+  .app {
+    padding: 0;
+    min-height: 0;
+  }
+  .paper {
+    width: 58mm;
+    box-shadow: none;
+    padding: 2mm;
+  }
+}

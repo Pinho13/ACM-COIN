@@ -1,0 +1,9 @@
+{
+  "name": "acm-coin",
+  "private": true,
+  "workspaces": ["evm", "apps/wallet", "apps/terminal"],
+  "scripts": {
+    "test": "npm test -w evm",
+    "build": "npm run build -w apps/wallet && npm run build -w apps/terminal"
+  }
+}

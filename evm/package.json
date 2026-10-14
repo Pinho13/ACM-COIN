@@ -1,0 +1,19 @@
+{
+  "name": "@acm-coin/evm",
+  "private": true,
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy": "hardhat run scripts/deploy.ts --network polkadotDevnet",
+    "send": "hardhat run scripts/send.ts --network polkadotDevnet",
+    "export-abi": "hardhat compile && tsx scripts/export-abi.ts"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox-viem": "^3.0.0",
+    "@openzeppelin/contracts": "^5.6.1",
+    "hardhat": "^2.29.1",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.3",
+    "viem": "^2.57.6"
+  }
+}
